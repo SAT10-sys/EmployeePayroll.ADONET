@@ -52,5 +52,31 @@ namespace EmployeePayrol.ADONET
                 System.Console.WriteLine(e.Message);
             }
         }
+        public bool UpdateSalary()
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"update EmployeePayrollTable set basicPay=3000000 where name='Terissa';";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    var result = cmd.ExecuteNonQuery();
+                    if (result != 0)
+                        return true;
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
+        }
     }
 }

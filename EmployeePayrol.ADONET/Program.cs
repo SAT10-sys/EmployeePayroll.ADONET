@@ -8,7 +8,9 @@ namespace EmployeePayrol.ADONET
         {
             Console.WriteLine("Welcome to Employee Payroll Program using .ADONET");
             EmployeeRepo employeeRepo = new EmployeeRepo();
-            employeeRepo.GetAllEmployees();
+            //employeeRepo.GetAllEmployees();
+            employeeRepo.UpdateSalary();
+            Console.WriteLine("Salary updated successfully");
         }
     }
 }
