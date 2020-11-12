@@ -8,7 +8,7 @@ namespace EmployeePayrol.ADONET
         {
             Console.WriteLine("Welcome to Employee Payroll Program using .ADONET");
             EmployeeRepo employeeRepo = new EmployeeRepo();
-            employeeRepo.GetAllEmployees();
+            //employeeRepo.GetAllEmployees();
             //employeeRepo.UpdateSalary();
             //Console.WriteLine("Salary updated successfully");
             /**Console.WriteLine("Enter the following details seperated by comma");
@@ -27,13 +27,16 @@ namespace EmployeePayrol.ADONET
             employeeModel.Tax= Convert.ToDecimal(details[8]);
             employeeModel.NetPay= Convert.ToDecimal(details[5]);
             employeeRepo.AddEmployeeUsingProcedures(employeeModel);
-            Console.WriteLine("Records added");*/
+            Console.WriteLine("Records added");
             Console.WriteLine("Enter Employee name whose salary is to be updated");
             string name = Console.ReadLine();
             Console.WriteLine("Enter new salary");
             decimal salary = Convert.ToDecimal(Console.ReadLine());
             employeeRepo.UpdateSalary(name, salary);
-            Console.WriteLine("Salary Updated");
+            Console.WriteLine("Salary Updated");*/
+            Console.WriteLine("Enter dates seperated by comma");
+            string[] dates = Console.ReadLine().Split(",");
+            employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
         }
     }
 }
