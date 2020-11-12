@@ -11,7 +11,9 @@ namespace EmployeeTest
         public void TestMethod1()
         {
             //given name and salary should update salary and return true
-            bool result = employeeRepo.UpdateSalary();
+            string name = "John";
+            decimal salary = 44000;
+            bool result = employeeRepo.UpdateSalary(name,salary);
             Assert.AreEqual(true, result);
         }
     }
