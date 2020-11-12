@@ -26,3 +26,6 @@ select * from EmployeePayrollTable
 
 select * from EmployeePayrollTable where startDate between '2018-12-31' and GETDATE();
 
+select gender,SUM(basicPay),AVG(basicPay),MAX(basicPay),MIN(basicPay),COUNT(id) from EmployeePayrollTable group by gender;
+
+
