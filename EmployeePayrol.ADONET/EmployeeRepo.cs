@@ -162,5 +162,41 @@ namespace EmployeePayrol.ADONET
                 this.connection.Close();
             }
         }
+        public void GetAggregateSalaryDetails()
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                string query = @"select gender,SUM(basicPay),AVG(basicPay),MAX(basicPay),MIN(basicPay),COUNT(id) from EmployeePayrollTable group by gender;";
+                SqlCommand cmd = new SqlCommand(query, this.connection);
+                this.connection.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if(dr.HasRows)
+                {
+                    Console.WriteLine("GENDER\tSUM\tAVG\tMAX\tMIN\tCOUNT");
+                    while(dr.Read())
+                    {
+                        string gender = dr.GetString(0);
+                        decimal sum = dr.GetDecimal(1);
+                        decimal avg = dr.GetDecimal(2);
+                        decimal max = dr.GetDecimal(3);
+                        decimal min = dr.GetDecimal(4);
+                        int count = dr.GetInt32(5);
+                        Console.WriteLine(gender+"\t"+sum+"\t"+avg+"\t"+max+"\t"+min+"\t"+count);
+                        Console.WriteLine("\n");
+                    }
+                }
+                else
+                    Console.WriteLine("No such records found");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }

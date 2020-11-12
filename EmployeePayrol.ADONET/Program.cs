@@ -33,10 +33,11 @@ namespace EmployeePayrol.ADONET
             Console.WriteLine("Enter new salary");
             decimal salary = Convert.ToDecimal(Console.ReadLine());
             employeeRepo.UpdateSalary(name, salary);
-            Console.WriteLine("Salary Updated");*/
+            Console.WriteLine("Salary Updated");
             Console.WriteLine("Enter dates seperated by comma");
             string[] dates = Console.ReadLine().Split(",");
-            employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
+            employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));*/
+            employeeRepo.GetAggregateSalaryDetails();
         }
     }
 }
