@@ -51,16 +51,56 @@ namespace EmployeePayrol.ADONET
             {
                 System.Console.WriteLine(e.Message);
             }
-        }
-        public bool UpdateSalary()
+        }        
+        public bool AddEmployeeUsingProcedures(EmployeeModel employeeModel)
         {
             connection = new SqlConnection(connectionString);
             try
             {
                 using (this.connection)
                 {
-                    string query = @"update EmployeePayrollTable set basicPay=3000000 where name='Terissa';";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    SqlCommand cmd = new SqlCommand("AddEmployeeDetails", this.connection);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeName", employeeModel.EmployeeFirstName);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", employeeModel.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@Address", employeeModel.Address);
+                    cmd.Parameters.AddWithValue("@Department", employeeModel.Department);
+                    cmd.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    cmd.Parameters.AddWithValue("@BasicPay", employeeModel.BasicPay);
+                    cmd.Parameters.AddWithValue("@Deductions", employeeModel.Deductions);
+                    cmd.Parameters.AddWithValue("@TaxablePay", employeeModel.TaxablePay);
+                    cmd.Parameters.AddWithValue("@Tax", employeeModel.Tax);
+                    cmd.Parameters.AddWithValue("@NetPay", employeeModel.NetPay);
+                    cmd.Parameters.AddWithValue("@StartDate", DateTime.Now);
+                    this.connection.Open();
+                    var result = cmd.ExecuteNonQuery();
+                    this.connection.Close();
+                    if (result != 0)
+                        return true;
+                    return false;                            
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
+        }
+        public bool UpdateSalary(string name, decimal salary)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand cmd = new SqlCommand("UpdateSalary", this.connection);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeName", name);
+                    cmd.Parameters.AddWithValue("@BasicPay", salary);
                     this.connection.Open();
                     var result = cmd.ExecuteNonQuery();
                     if (result != 0)
@@ -68,7 +108,7 @@ namespace EmployeePayrol.ADONET
                     return false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
