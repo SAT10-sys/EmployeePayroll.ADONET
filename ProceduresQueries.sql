@@ -32,3 +32,14 @@ as
 begin
 update EmployeePayrollTable set basicPay=@BasicPay where name=@EmployeeName;
 end
+
+go
+create or Alter procedure GetEmployeesInStartDateRange
+(
+@StartDate1 date,
+@StartDate2 date
+)
+as
+begin
+select id, name, basicPay, startDate, gender, phoneNumber, address, department, deductions, taxablePay, incomeTax, netPay from EmployeePayrollTable where startDate between @StartDate1 and @StartDate2;
+end
