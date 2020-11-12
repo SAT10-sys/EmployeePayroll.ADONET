@@ -32,3 +32,7 @@ insert into EmployeePayrollTable values
 ('Axl',60000,'2020-11-13','M','6666666666','Marketing','London',15000,45000,3000,42000);
 select * from EmployeePayrollTable
 
+insert into EmployeePayrollTable values
+('James',200000,'2020-11-13','M','7777777777','Sales','Sydney',40000,160000,16000,144000);
+select * from EmployeePayrollTable
+

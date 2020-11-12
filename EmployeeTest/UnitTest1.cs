@@ -22,17 +22,17 @@ namespace EmployeeTest
         {
             //test method for checking data added is synced with DB
             EmployeeModel employeeModel = new EmployeeModel();
-            employeeModel.EmployeeFirstName = "Axl";
-            employeeModel.Department = "Marketing";
-            employeeModel.PhoneNumber = "6666666666";
-            employeeModel.Address = "London";
+            employeeModel.EmployeeFirstName = "Kirk";
+            employeeModel.Department = "HR";
+            employeeModel.PhoneNumber = "8888888888";
+            employeeModel.Address = "Chennai";
             employeeModel.Gender = Convert.ToChar("M");
             employeeModel.StartDate = DateTime.Today;
-            employeeModel.BasicPay = Convert.ToDecimal(60000);
-            employeeModel.Deductions= Convert.ToDecimal(15000);
-            employeeModel.TaxablePay= Convert.ToDecimal(45000);
-            employeeModel.Tax= Convert.ToDecimal(3000);
-            employeeModel.NetPay= Convert.ToDecimal(42000);
+            employeeModel.BasicPay = Convert.ToDecimal(200000);
+            employeeModel.Deductions = 0.2M * employeeModel.BasicPay;
+            employeeModel.TaxablePay = employeeModel.BasicPay - employeeModel.Deductions;
+            employeeModel.Tax = 0.1M * employeeModel.TaxablePay;
+            employeeModel.NetPay = employeeModel.BasicPay - employeeModel.Tax;
             bool result = employeeRepo.AddEmployeeUsingProcedures(employeeModel);
             Assert.AreEqual(true, result);
         }

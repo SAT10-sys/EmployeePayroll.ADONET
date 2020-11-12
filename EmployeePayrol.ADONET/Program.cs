@@ -11,8 +11,8 @@ namespace EmployeePayrol.ADONET
             //employeeRepo.GetAllEmployees();
             //employeeRepo.UpdateSalary();
             //Console.WriteLine("Salary updated successfully");
-            /**Console.WriteLine("Enter the following details seperated by comma");
-            Console.WriteLine("Enter Name ,Department, Phone no, Address, Gender, BasicPay, Deduction, Taxable Pay, Tax, NetPay");
+            Console.WriteLine("Enter the following details seperated by comma");
+            Console.WriteLine("Enter Name ,Department, Phone no, Address, Gender, BasicPay");
             string[] details = Console.ReadLine().Split(",");
             EmployeeModel employeeModel = new EmployeeModel();
             employeeModel.EmployeeFirstName = details[0];
@@ -22,13 +22,13 @@ namespace EmployeePayrol.ADONET
             employeeModel.Gender = Convert.ToChar(details[4]);
             employeeModel.StartDate = DateTime.Today;
             employeeModel.BasicPay = Convert.ToDecimal(details[5]);
-            employeeModel.Deductions= Convert.ToDecimal(details[6]);
-            employeeModel.TaxablePay= Convert.ToDecimal(details[7]);
-            employeeModel.Tax= Convert.ToDecimal(details[8]);
-            employeeModel.NetPay= Convert.ToDecimal(details[5]);
+            employeeModel.Deductions = 0.2M * employeeModel.BasicPay;
+            employeeModel.TaxablePay = employeeModel.BasicPay - employeeModel.Deductions;
+            employeeModel.Tax = 0.1M * employeeModel.TaxablePay;
+            employeeModel.NetPay = employeeModel.BasicPay - employeeModel.Tax;
             employeeRepo.AddEmployeeUsingProcedures(employeeModel);
             Console.WriteLine("Records added");
-            Console.WriteLine("Enter Employee name whose salary is to be updated");
+            /**Console.WriteLine("Enter Employee name whose salary is to be updated");
             string name = Console.ReadLine();
             Console.WriteLine("Enter new salary");
             decimal salary = Convert.ToDecimal(Console.ReadLine());
@@ -37,7 +37,7 @@ namespace EmployeePayrol.ADONET
             Console.WriteLine("Enter dates seperated by comma");
             string[] dates = Console.ReadLine().Split(",");
             employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));*/
-            employeeRepo.GetAggregateSalaryDetails();
+            //employeeRepo.GetAggregateSalaryDetails();
         }
     }
 }
