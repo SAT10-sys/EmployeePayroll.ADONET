@@ -24,4 +24,5 @@ insert into EmployeePayrollTable values
 ('Terissa',40000, '2019-02-08','F','3333333333','HR','Bangalore',10000,30000,5000,25000);
 select * from EmployeePayrollTable
 
+select * from EmployeePayrollTable where startDate between '2018-12-31' and GETDATE();
 
