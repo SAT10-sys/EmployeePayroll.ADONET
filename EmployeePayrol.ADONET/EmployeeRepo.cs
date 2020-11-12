@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
-
+using System.Data;
 
 namespace EmployeePayrol.ADONET
 {
     public class EmployeeRepo
     {
         public static string connectionString = @"Data Source=.;Initial Catalog=EmployeePayrollService2;Integrated Security=True";
-        SqlConnection connection = new SqlConnection(connectionString);
+        SqlConnection connection;
+        List<EmployeeModel> employeeList = new List<EmployeeModel>();
         public void GetAllEmployees()
         {
+            connection = new SqlConnection(connectionString);
             try
             {
                 EmployeeModel employeeModel = new EmployeeModel();

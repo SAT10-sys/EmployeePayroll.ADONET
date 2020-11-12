@@ -28,4 +28,7 @@ select * from EmployeePayrollTable where startDate between '2018-12-31' and GETD
 
 select gender,SUM(basicPay),AVG(basicPay),MAX(basicPay),MIN(basicPay),COUNT(id) from EmployeePayrollTable group by gender;
 
+insert into EmployeePayrollTable values
+('Axl',60000,'2020-11-13','M','6666666666','Marketing','London',15000,45000,3000,42000);
+select * from EmployeePayrollTable
 
