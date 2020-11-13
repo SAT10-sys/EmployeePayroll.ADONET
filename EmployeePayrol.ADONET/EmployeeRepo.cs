@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace EmployeePayrol.ADONET
 {
@@ -249,7 +250,13 @@ namespace EmployeePayrol.ADONET
             employeeList.ForEach(employee =>
             {
                 count++;
-                AddEmployeeUsingProcedures(employee);
+                Task task = new Task(() =>
+                  {
+                      AddEmployeeUsingProcedures(employee);
+                  }
+                );
+                task.Start();
+                task.Wait();
             }
             );
             return count;
