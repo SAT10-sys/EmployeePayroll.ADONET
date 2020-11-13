@@ -31,7 +31,7 @@ namespace EmployeePayrol.ADONET
                         while(dr.Read())
                         {
                             employeeModel.EmployeeID = dr.GetInt32(0);
-                            employeeModel.EmployeeFirstName = dr.GetString(1);
+                            employeeModel.EmployeeName = dr.GetString(1);
                             employeeModel.BasicPay = dr.GetDecimal(2);
                             employeeModel.StartDate = dr.GetDateTime(3);
                             employeeModel.Gender = Convert.ToChar(dr.GetString(4));
@@ -42,7 +42,7 @@ namespace EmployeePayrol.ADONET
                             employeeModel.TaxablePay = dr.GetDecimal(9);
                             employeeModel.Tax = dr.GetDecimal(10);
                             employeeModel.NetPay = dr.GetDecimal(11);
-                            Console.WriteLine(employeeModel.EmployeeID + " " + employeeModel.EmployeeFirstName + " " + employeeModel.BasicPay + " " + employeeModel.StartDate + " " + employeeModel.Gender + " " + employeeModel.PhoneNumber + " " + employeeModel.Address + " " + employeeModel.Department + " " + employeeModel.Deductions + " " + employeeModel.TaxablePay + " " + employeeModel.Tax + " " + employeeModel.NetPay);
+                            Console.WriteLine(employeeModel.EmployeeID + " " + employeeModel.EmployeeName + " " + employeeModel.BasicPay + " " + employeeModel.StartDate + " " + employeeModel.Gender + " " + employeeModel.PhoneNumber + " " + employeeModel.Address + " " + employeeModel.Department + " " + employeeModel.Deductions + " " + employeeModel.TaxablePay + " " + employeeModel.Tax + " " + employeeModel.NetPay);
                             Console.WriteLine("\n");
                         }
                     }
@@ -66,7 +66,8 @@ namespace EmployeePayrol.ADONET
                 {
                     SqlCommand cmd = new SqlCommand("AddEmployeeDetails", this.connection);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@EmployeeName", employeeModel.EmployeeFirstName);
+                    cmd.Parameters.AddWithValue("@EmpId", employeeModel.EmployeeID);
+                    cmd.Parameters.AddWithValue("@EmployeeName", employeeModel.EmployeeName);
                     cmd.Parameters.AddWithValue("@PhoneNumber", employeeModel.PhoneNumber);
                     cmd.Parameters.AddWithValue("@Address", employeeModel.Address);
                     cmd.Parameters.AddWithValue("@Department", employeeModel.Department);
@@ -95,7 +96,7 @@ namespace EmployeePayrol.ADONET
             }
             return false;
         }
-        public bool UpdateSalary(string name, decimal salary)
+        public bool UpdateSalary(int id, decimal salary)
         {
             connection = new SqlConnection(connectionString);
             try
@@ -104,12 +105,19 @@ namespace EmployeePayrol.ADONET
                 {
                     SqlCommand cmd = new SqlCommand("UpdateSalary", this.connection);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@EmployeeName", name);
+                    cmd.Parameters.AddWithValue("@EmpId", id);
                     cmd.Parameters.AddWithValue("@BasicPay", salary);
                     this.connection.Open();
                     var result = cmd.ExecuteNonQuery();
                     if (result != 0)
+                    {
+                        foreach (var employee in employeeList)
+                        {
+                            if (employee.EmployeeID.Equals(id))
+                                employee.BasicPay = salary;
+                        }
                         return true;
+                    }
                     return false;
                 }
             }
@@ -140,7 +148,7 @@ namespace EmployeePayrol.ADONET
                     while(dr.Read())
                     {
                         employeeModel.EmployeeID = dr.GetInt32(0);
-                        employeeModel.EmployeeFirstName = dr.GetString(1);
+                        employeeModel.EmployeeName = dr.GetString(1);
                         employeeModel.BasicPay = dr.GetDecimal(2);
                         employeeModel.StartDate = dr.GetDateTime(3);
                         employeeModel.Gender = Convert.ToChar(dr.GetString(4));
@@ -151,7 +159,7 @@ namespace EmployeePayrol.ADONET
                         employeeModel.TaxablePay = dr.GetDecimal(9);
                         employeeModel.Tax = dr.GetDecimal(10);
                         employeeModel.NetPay = dr.GetDecimal(11);
-                        Console.WriteLine(employeeModel.EmployeeID + " " + employeeModel.EmployeeFirstName + " " + employeeModel.BasicPay + " " + employeeModel.StartDate + " " + employeeModel.Gender + " " + employeeModel.PhoneNumber + " " + employeeModel.Address + " " + employeeModel.Department + " " + employeeModel.Deductions + " " + employeeModel.TaxablePay + " " + employeeModel.Tax + " " + employeeModel.NetPay);
+                        Console.WriteLine(employeeModel.EmployeeID + " " + employeeModel.EmployeeName + " " + employeeModel.BasicPay + " " + employeeModel.StartDate + " " + employeeModel.Gender + " " + employeeModel.PhoneNumber + " " + employeeModel.Address + " " + employeeModel.Department + " " + employeeModel.Deductions + " " + employeeModel.TaxablePay + " " + employeeModel.Tax + " " + employeeModel.NetPay);
                         Console.WriteLine("\n");
                     }
                 }
@@ -234,6 +242,17 @@ namespace EmployeePayrol.ADONET
                 this.connection.Close();
             }
             return false;
+        }
+        public int AddMultipleEmployees(List<EmployeeModel> employeeList)
+        {
+            int count = 0;
+            employeeList.ForEach(employee =>
+            {
+                count++;
+                AddEmployeeUsingProcedures(employee);
+            }
+            );
+            return count;
         }
     }
 }

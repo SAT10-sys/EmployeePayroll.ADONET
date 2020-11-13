@@ -55,13 +55,13 @@ END
 go
 create or alter procedure UpdateSalary
 (
-@EmployeeName varchar(30),
+@EmpId int,
 @BasicPay money
 )
 as 
 begin
 update EmpPay
-set BasicPay=@BasicPay from EmpPay inner join Employee on EmpPay.EId=Employee.EId where Employee.EName=@EmployeeName;
+set BasicPay=@BasicPay from EmpPay inner join Employee on EmpPay.EId=Employee.EId where EmpPay.EId=@EmpId
 end
 
 --get employees in start date range
