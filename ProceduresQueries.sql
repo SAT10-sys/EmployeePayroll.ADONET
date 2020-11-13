@@ -1,6 +1,6 @@
 use EmployeePayrollService2
 go
-create procedure AddEmployeeDetails
+create or alter procedure AddEmployeeDetails
 (
 @EmployeeName varchar(30),
 @PhoneNumber varchar(15),
@@ -12,25 +12,55 @@ create procedure AddEmployeeDetails
 @TaxablePay float,
 @Tax float,
 @NetPay float,
-@StartDate date
+@StartDate date,
+@EmpId int out
 )
 as 
 begin
-insert into EmployeePayrollTable values
+set XACT_ABORT on;
+begin try;
+begin transaction;
+insert into Employee values
 (
-@EmployeeName, @BasicPay, @StartDate, @Gender, @PhoneNumber, @Address, @Department, @Deductions, @TaxablePay, @Tax, @NetPay
+@EmployeeName,@Gender,@PhoneNumber,@Address,@StartDate
 )
-end
+set @EmpId=SCOPE_IDENTITY()
+insert into EmpPay values
+(
+@EmpId,@BasicPay,@Deductions,@TaxablePay,@Tax,@NetPay
+)
+insert into Employee_Department values
+(
+@EmpId , (select DeptId from Department where DeptName = @Department)
+)
+COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+select ERROR_NUMBER() AS ErrorNumber, ERROR_MESSAGE() AS ErrorMessage;
+IF(XACT_STATE()=-1)
+BEGIN
+PRINT N'The transaction is in an uncommitable state.'+'Rolling back transaction.'
+ROLLBACK TRANSACTION;
+END;
+
+IF(XACT_STATE()=1)
+BEGIN
+PRINT N'The transaction is commitable.'+'Committing transaction.'
+COMMIT TRANSACTION;
+END;
+END CATCH
+END
 
 go
-create procedure UpdateSalary
+create or alter procedure UpdateSalary
 (
 @EmployeeName varchar(30),
 @BasicPay money
 )
 as 
 begin
-update EmployeePayrollTable set basicPay=@BasicPay where name=@EmployeeName;
+update EmpPay
+set BasicPay=@BasicPay from EmpPay inner join Employee on EmpPay.EId=Employee.EId where Employee.EName=@EmployeeName;
 end
 
 go
