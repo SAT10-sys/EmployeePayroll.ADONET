@@ -51,6 +51,7 @@ END;
 END CATCH
 END
 
+--update salary
 go
 create or alter procedure UpdateSalary
 (
@@ -63,6 +64,7 @@ update EmpPay
 set BasicPay=@BasicPay from EmpPay inner join Employee on EmpPay.EId=Employee.EId where Employee.EName=@EmployeeName;
 end
 
+--get employees in start date range
 go
 create or Alter procedure GetEmployeesInStartDateRange
 (
@@ -73,3 +75,39 @@ as
 begin
 select id, name, basicPay, startDate, gender, phoneNumber, address, department, deductions, taxablePay, incomeTax, netPay from EmployeePayrollTable where startDate between @StartDate1 and @StartDate2;
 end
+
+
+
+--remove employee
+go
+create or alter procedure RemoveEmployeeData
+(
+@EmpId int
+)
+as 
+begin
+set XACT_ABORT on;
+begin try
+begin transaction;
+
+Delete from EmpPay where EId=@EmpId;
+Delete from Employee_Department where EmpId=@EmpId;
+Delete from Employee where EId=@EmpId;
+
+commit transaction;
+end try
+begin catch
+select ERROR_NUMBER() AS ErrorNumber, ERROR_MESSAGE() AS ErrorMessage;
+IF(XACT_STATE())=-1
+BEGIN
+  PRINT N'The transaction is in an uncommitable state.'+'Rolling back transaction.'
+  ROLLBACK TRANSACTION;
+  END;
+  IF(XACT_STATE())=1
+  BEGIN
+    PRINT 
+	    N'The transaction is committable. '+'Committing transaction.'
+       COMMIT TRANSACTION;
+	END;
+	END CATCH
+END

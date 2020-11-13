@@ -36,8 +36,13 @@ namespace EmployeePayrol.ADONET
             Console.WriteLine("Salary Updated");
             Console.WriteLine("Enter dates seperated by comma");
             string[] dates = Console.ReadLine().Split(",");
-            employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));*/
+            employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
             employeeRepo.GetAggregateSalaryDetails();
+            employeeRepo.GetAllEmployees();*/
+            Console.WriteLine("Enter id of the employee whose details you want to delete");
+            int id = Convert.ToInt32(Console.ReadLine());
+            employeeRepo.RemoveEmployee(id);
+            Console.WriteLine("Employee removed");
             employeeRepo.GetAllEmployees();
         }
     }

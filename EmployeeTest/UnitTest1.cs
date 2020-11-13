@@ -36,5 +36,12 @@ namespace EmployeeTest
             bool result = employeeRepo.AddEmployeeUsingProcedures(employeeModel);
             Assert.AreEqual(true, result);
         }
+        [TestMethod]
+        public void TestMethod3()
+        {
+            //test method to check employee removed            
+            bool result=employeeRepo.RemoveEmployee(2);
+            Assert.AreEqual(true, result);
+        }
     }
 }

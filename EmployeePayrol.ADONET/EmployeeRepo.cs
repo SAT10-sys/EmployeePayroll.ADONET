@@ -205,5 +205,35 @@ namespace EmployeePayrol.ADONET
                 this.connection.Close();
             }
         }
+        public bool RemoveEmployee(int id)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand cmd = new SqlCommand("RemoveEmployeeData", this.connection);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmpId", id);
+                    this.connection.Open();
+                    var result = cmd.ExecuteNonQuery();
+                    if(result!=0)
+                    {
+                        employeeList.RemoveAll(x => x.EmployeeID == id);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
+        }
     }
 }
