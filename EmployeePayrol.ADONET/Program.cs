@@ -11,7 +11,7 @@ namespace EmployeePayrol.ADONET
             //employeeRepo.GetAllEmployees();
             //employeeRepo.UpdateSalary();
             //Console.WriteLine("Salary updated successfully");
-            Console.WriteLine("Enter the following details seperated by comma");
+            /**Console.WriteLine("Enter the following details seperated by comma");
             Console.WriteLine("Enter Name ,Department, Phone no, Address, Gender, BasicPay");
             string[] details = Console.ReadLine().Split(",");
             EmployeeModel employeeModel = new EmployeeModel();
@@ -28,7 +28,7 @@ namespace EmployeePayrol.ADONET
             employeeModel.NetPay = employeeModel.BasicPay - employeeModel.Tax;
             employeeRepo.AddEmployeeUsingProcedures(employeeModel);
             Console.WriteLine("Records added");
-            /**Console.WriteLine("Enter Employee name whose salary is to be updated");
+            Console.WriteLine("Enter Employee name whose salary is to be updated");
             string name = Console.ReadLine();
             Console.WriteLine("Enter new salary");
             decimal salary = Convert.ToDecimal(Console.ReadLine());
@@ -37,7 +37,8 @@ namespace EmployeePayrol.ADONET
             Console.WriteLine("Enter dates seperated by comma");
             string[] dates = Console.ReadLine().Split(",");
             employeeRepo.GetEmployeesInDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));*/
-            //employeeRepo.GetAggregateSalaryDetails();
+            employeeRepo.GetAggregateSalaryDetails();
+            employeeRepo.GetAllEmployees();
         }
     }
 }

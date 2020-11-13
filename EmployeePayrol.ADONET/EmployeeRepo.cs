@@ -19,7 +19,10 @@ namespace EmployeePayrol.ADONET
                 EmployeeModel employeeModel = new EmployeeModel();
                 using (this.connection)
                 {
-                    string query = @"select * from EmployeePayrollTable;";
+                    string query = @"select Employee.EId ,EName,BasicPay,StartDate,Gender,PhoneNumber,Address,DeptName,Deductions,TaxablePay,Tax,NetPay from Employee 
+                                     INNER JOIN Employee_Department ON Employee.EId = Employee_Department.EmpId
+                                     INNER JOIN  EmpPay ON Employee.EId = EmpPay.EId
+                                     INNER JOIN Department ON Department.DeptId = Employee_Department.DeptId;";
                     SqlCommand cmd = new SqlCommand(query, this.connection);
                     this.connection.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -169,22 +172,24 @@ namespace EmployeePayrol.ADONET
             connection = new SqlConnection(connectionString);
             try
             {
-                string query = @"select gender,SUM(basicPay),AVG(basicPay),MAX(basicPay),MIN(basicPay),COUNT(id) from EmployeePayrollTable group by gender;";
+                string query = @"select Gender,SUM(BasicPay) as SUM,
+                                 AVG(BasicPay) as AVG, MIN(BasicPay) as MIN,
+                                 MAX(BasicPay) as MAX from Employee INNER JOIN EmpPay 
+                                 ON Employee.EId = EmpPay.EId GROUP BY Gender;";
                 SqlCommand cmd = new SqlCommand(query, this.connection);
                 this.connection.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 if(dr.HasRows)
                 {
-                    Console.WriteLine("GENDER\tSUM\tAVG\tMAX\tMIN\tCOUNT");
+                    Console.WriteLine("GENDER\tSUM\tAVG\tMAX\tMIN");
                     while(dr.Read())
                     {
                         string gender = dr.GetString(0);
                         decimal sum = dr.GetDecimal(1);
                         decimal avg = dr.GetDecimal(2);
                         decimal max = dr.GetDecimal(3);
-                        decimal min = dr.GetDecimal(4);
-                        int count = dr.GetInt32(5);
-                        Console.WriteLine(gender+"\t"+sum+"\t"+avg+"\t"+max+"\t"+min+"\t"+count);
+                        decimal min = dr.GetDecimal(4);                        
+                        Console.WriteLine(gender+"\t"+sum+"\t"+avg+"\t"+max+"\t"+min);
                         Console.WriteLine("\n");
                     }
                 }
